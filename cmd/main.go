@@ -74,7 +74,14 @@ func newRootCmd() *cobra.Command {
 			}
 
 			mux := http.NewServeMux()
-			mw := handlers.LoggingMiddleware(logger)
+
+			mw := handlers.Chain(
+				handlers.RecoveryMiddleware(logger),
+				handlers.RequestIDMiddleware,
+				handlers.LoggingMiddleware(logger),
+				handlers.DefaultJSONMiddleware,
+				client.RefreshTokenMiddleware,
+			)
 
 			mux.Handle("/report/{name}", mw(&reporter))
 

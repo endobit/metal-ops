@@ -59,7 +59,7 @@ func (r *Reporter) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "text/html")
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	if _, err := w.Write(b); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
